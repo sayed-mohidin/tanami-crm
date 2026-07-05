@@ -21,11 +21,31 @@ import { PET_CARE_AGREEMENT_CARETAKER_MORPH_SEED } from 'src/engine/workspace-ma
 import { PET_CUSTOM_FIELD_SEEDS } from 'src/engine/workspace-manager/dev-seeder/metadata/custom-fields/constants/pet-custom-field-seeds.constant';
 import { PET_CUSTOM_RELATION_FIELD_SEEDS } from 'src/engine/workspace-manager/dev-seeder/metadata/custom-fields/constants/pet-custom-relation-field-seeds.constant';
 import { SURVEY_RESULT_CUSTOM_FIELD_SEEDS } from 'src/engine/workspace-manager/dev-seeder/metadata/custom-fields/constants/survey-results-field-seeds.constant';
+import {
+  TANAMI_ASSIGNMENT_HISTORY_CUSTOM_FIELD_SEEDS,
+  TANAMI_CALL_NOTE_CUSTOM_FIELD_SEEDS,
+  TANAMI_INVESTMENT_CUSTOM_FIELD_SEEDS,
+  TANAMI_KYC_CASE_CUSTOM_FIELD_SEEDS,
+  TANAMI_PLATFORM_ACTIVITY_CUSTOM_FIELD_SEEDS,
+  TANAMI_TRANSACTION_CUSTOM_FIELD_SEEDS,
+  TANAMI_TRIGGER_EVENT_CUSTOM_FIELD_SEEDS,
+} from 'src/engine/workspace-manager/dev-seeder/metadata/custom-fields/constants/tanami-custom-object-field-seeds.constant';
+import { TANAMI_PERSON_CUSTOM_FIELD_SEEDS } from 'src/engine/workspace-manager/dev-seeder/metadata/custom-fields/constants/tanami-person-custom-field-seeds.constant';
+import { TANAMI_TASK_CUSTOM_FIELD_SEEDS } from 'src/engine/workspace-manager/dev-seeder/metadata/custom-fields/constants/tanami-task-custom-field-seeds.constant';
 import { EMPLOYMENT_HISTORY_CUSTOM_OBJECT_SEED } from 'src/engine/workspace-manager/dev-seeder/metadata/custom-objects/constants/employment-history-custom-object-seed.constant';
 import { PET_CARE_AGREEMENT_CUSTOM_OBJECT_SEED } from 'src/engine/workspace-manager/dev-seeder/metadata/custom-objects/constants/pet-care-agreement-custom-object-seed.constant';
 import { PET_CUSTOM_OBJECT_SEED } from 'src/engine/workspace-manager/dev-seeder/metadata/custom-objects/constants/pet-custom-object-seed.constant';
 import { ROCKET_CUSTOM_OBJECT_SEED } from 'src/engine/workspace-manager/dev-seeder/metadata/custom-objects/constants/rocket-custom-object-seed.constant';
 import { SURVEY_RESULT_CUSTOM_OBJECT_SEED } from 'src/engine/workspace-manager/dev-seeder/metadata/custom-objects/constants/survey-results-object-seed.constant';
+import {
+  TANAMI_ASSIGNMENT_HISTORY_CUSTOM_OBJECT_SEED,
+  TANAMI_CALL_NOTE_CUSTOM_OBJECT_SEED,
+  TANAMI_INVESTMENT_CUSTOM_OBJECT_SEED,
+  TANAMI_KYC_CASE_CUSTOM_OBJECT_SEED,
+  TANAMI_PLATFORM_ACTIVITY_CUSTOM_OBJECT_SEED,
+  TANAMI_TRANSACTION_CUSTOM_OBJECT_SEED,
+  TANAMI_TRIGGER_EVENT_CUSTOM_OBJECT_SEED,
+} from 'src/engine/workspace-manager/dev-seeder/metadata/custom-objects/constants/tanami-custom-object-seeds.constant';
 import { type FieldMetadataSeed } from 'src/engine/workspace-manager/dev-seeder/metadata/types/field-metadata-seed.type';
 import { type ObjectMetadataSeed } from 'src/engine/workspace-manager/dev-seeder/metadata/types/object-metadata-seed.type';
 
@@ -64,6 +84,157 @@ type FlatMaps = {
   objectIdByName: Record<string, string>;
 };
 
+const TANAMI_WORKSPACE_CONFIG: WorkspaceSeedConfig = {
+  objects: [
+    {
+      seed: TANAMI_ASSIGNMENT_HISTORY_CUSTOM_OBJECT_SEED,
+      fields: TANAMI_ASSIGNMENT_HISTORY_CUSTOM_FIELD_SEEDS,
+    },
+    {
+      seed: TANAMI_INVESTMENT_CUSTOM_OBJECT_SEED,
+      fields: TANAMI_INVESTMENT_CUSTOM_FIELD_SEEDS,
+    },
+    {
+      seed: TANAMI_TRANSACTION_CUSTOM_OBJECT_SEED,
+      fields: TANAMI_TRANSACTION_CUSTOM_FIELD_SEEDS,
+    },
+    {
+      seed: TANAMI_KYC_CASE_CUSTOM_OBJECT_SEED,
+      fields: TANAMI_KYC_CASE_CUSTOM_FIELD_SEEDS,
+    },
+    {
+      seed: TANAMI_TRIGGER_EVENT_CUSTOM_OBJECT_SEED,
+      fields: TANAMI_TRIGGER_EVENT_CUSTOM_FIELD_SEEDS,
+    },
+    {
+      seed: TANAMI_PLATFORM_ACTIVITY_CUSTOM_OBJECT_SEED,
+      fields: TANAMI_PLATFORM_ACTIVITY_CUSTOM_FIELD_SEEDS,
+    },
+    {
+      seed: TANAMI_CALL_NOTE_CUSTOM_OBJECT_SEED,
+      fields: TANAMI_CALL_NOTE_CUSTOM_FIELD_SEEDS,
+    },
+  ],
+  fields: [
+    { objectName: 'person', seeds: TANAMI_PERSON_CUSTOM_FIELD_SEEDS },
+    { objectName: 'task', seeds: TANAMI_TASK_CUSTOM_FIELD_SEEDS },
+  ],
+  junctionFields: [
+    {
+      sourceObjectName: 'workspaceMember',
+      name: 'assignedPeople',
+      label: 'Assigned People',
+      icon: 'IconUsers',
+      targetObjectName: 'person',
+      targetFieldLabel: 'Current RM',
+      targetFieldIcon: 'IconUserCheck',
+    },
+    {
+      sourceObjectName: 'person',
+      name: 'assignmentHistories',
+      label: 'Assignment Histories',
+      icon: 'IconUserCheck',
+      targetObjectName:
+        TANAMI_ASSIGNMENT_HISTORY_CUSTOM_OBJECT_SEED.nameSingular,
+      targetFieldLabel: 'Person',
+      targetFieldIcon: 'IconUser',
+    },
+    {
+      sourceObjectName: 'workspaceMember',
+      name: 'rmAssignmentHistories',
+      label: 'RM Assignment Histories',
+      icon: 'IconUserCheck',
+      targetObjectName:
+        TANAMI_ASSIGNMENT_HISTORY_CUSTOM_OBJECT_SEED.nameSingular,
+      targetFieldLabel: 'RM',
+      targetFieldIcon: 'IconUserCircle',
+    },
+    {
+      sourceObjectName: 'workspaceMember',
+      name: 'createdAssignmentHistories',
+      label: 'Created Assignment Histories',
+      icon: 'IconUserCog',
+      targetObjectName:
+        TANAMI_ASSIGNMENT_HISTORY_CUSTOM_OBJECT_SEED.nameSingular,
+      targetFieldLabel: 'Assigned By',
+      targetFieldIcon: 'IconUserCog',
+    },
+    {
+      sourceObjectName: 'person',
+      name: 'investments',
+      label: 'Investments',
+      icon: 'IconChartBar',
+      targetObjectName: TANAMI_INVESTMENT_CUSTOM_OBJECT_SEED.nameSingular,
+      targetFieldLabel: 'Person',
+      targetFieldIcon: 'IconUser',
+    },
+    {
+      sourceObjectName: 'person',
+      name: 'transactions',
+      label: 'Transactions',
+      icon: 'IconReceipt',
+      targetObjectName: TANAMI_TRANSACTION_CUSTOM_OBJECT_SEED.nameSingular,
+      targetFieldLabel: 'Person',
+      targetFieldIcon: 'IconUser',
+    },
+    {
+      sourceObjectName: 'person',
+      name: 'kycCases',
+      label: 'KYC Cases',
+      icon: 'IconShieldCheck',
+      targetObjectName: TANAMI_KYC_CASE_CUSTOM_OBJECT_SEED.nameSingular,
+      targetFieldLabel: 'Person',
+      targetFieldIcon: 'IconUser',
+    },
+    {
+      sourceObjectName: 'person',
+      name: 'triggerEvents',
+      label: 'Trigger Events',
+      icon: 'IconBellRinging',
+      targetObjectName: TANAMI_TRIGGER_EVENT_CUSTOM_OBJECT_SEED.nameSingular,
+      targetFieldLabel: 'Person',
+      targetFieldIcon: 'IconUser',
+    },
+    {
+      sourceObjectName: 'person',
+      name: 'callNotes',
+      label: 'Call Notes',
+      icon: 'IconPhoneCall',
+      targetObjectName: TANAMI_CALL_NOTE_CUSTOM_OBJECT_SEED.nameSingular,
+      targetFieldLabel: 'Person',
+      targetFieldIcon: 'IconUser',
+    },
+    {
+      sourceObjectName: 'task',
+      name: 'callNotes',
+      label: 'Call Notes',
+      icon: 'IconPhoneCall',
+      targetObjectName: TANAMI_CALL_NOTE_CUSTOM_OBJECT_SEED.nameSingular,
+      targetFieldLabel: 'Task',
+      targetFieldIcon: 'IconCheckbox',
+    },
+    {
+      sourceObjectName: 'workspaceMember',
+      name: 'completedCallNotes',
+      label: 'Completed Call Notes',
+      icon: 'IconPhoneCall',
+      targetObjectName: TANAMI_CALL_NOTE_CUSTOM_OBJECT_SEED.nameSingular,
+      targetFieldLabel: 'RM',
+      targetFieldIcon: 'IconUserCircle',
+    },
+    {
+      sourceObjectName: 'person',
+      name: 'platformActivities',
+      label: 'Platform Activities',
+      icon: 'IconActivity',
+      targetObjectName:
+        TANAMI_PLATFORM_ACTIVITY_CUSTOM_OBJECT_SEED.nameSingular,
+      targetFieldLabel: 'Person',
+      targetFieldIcon: 'IconUser',
+    },
+  ],
+};
+
 @Injectable()
 export class DevSeederMetadataService {
   constructor(
@@ -84,10 +255,12 @@ export class DevSeederMetadataService {
         // Junction objects (minimal pivots)
         { seed: EMPLOYMENT_HISTORY_CUSTOM_OBJECT_SEED },
         { seed: PET_CARE_AGREEMENT_CUSTOM_OBJECT_SEED },
+        ...TANAMI_WORKSPACE_CONFIG.objects,
       ],
       fields: [
         { objectName: 'company', seeds: COMPANY_CUSTOM_FIELD_SEEDS },
         { objectName: 'person', seeds: PERSON_CUSTOM_FIELD_SEEDS },
+        ...TANAMI_WORKSPACE_CONFIG.fields,
       ],
       morphRelations: [
         {
@@ -98,6 +271,7 @@ export class DevSeederMetadataService {
           objectName: PET_CARE_AGREEMENT_CUSTOM_OBJECT_SEED.nameSingular,
           seeds: [PET_CARE_AGREEMENT_CARETAKER_MORPH_SEED],
         },
+        ...(TANAMI_WORKSPACE_CONFIG.morphRelations ?? []),
       ],
       junctionFields: [
         // Employment History: Person <-> Company
@@ -129,6 +303,7 @@ export class DevSeederMetadataService {
           targetFieldLabel: 'Pet',
           targetFieldIcon: 'IconCat',
         },
+        ...(TANAMI_WORKSPACE_CONFIG.junctionFields ?? []),
       ],
       junctionConfigs: [
         // Employment History junction configs
@@ -158,6 +333,7 @@ export class DevSeederMetadataService {
           fieldName: 'caredForPets',
           junctionTargetFieldRef: `${PET_CARE_AGREEMENT_CUSTOM_OBJECT_SEED.nameSingular}.pet`,
         },
+        ...(TANAMI_WORKSPACE_CONFIG.junctionConfigs ?? []),
       ],
     },
     [SEED_YCOMBINATOR_WORKSPACE_ID]: {
@@ -175,10 +351,7 @@ export class DevSeederMetadataService {
   };
 
   private getLightConfig(_config: WorkspaceSeedConfig): WorkspaceSeedConfig {
-    return {
-      objects: [],
-      fields: [],
-    };
+    return TANAMI_WORKSPACE_CONFIG;
   }
 
   private getConfig(workspaceId: string, light: boolean): WorkspaceSeedConfig {
