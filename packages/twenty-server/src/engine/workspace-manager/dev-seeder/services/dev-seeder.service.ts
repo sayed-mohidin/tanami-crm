@@ -74,9 +74,10 @@ export class DevSeederService {
 
   public async seedDev(
     workspaceId: SeededWorkspacesIds,
-    options?: { light?: boolean },
+    options?: { light?: boolean; metadataOnly?: boolean },
   ): Promise<void> {
     const light = options?.light ?? false;
+    const metadataOnly = options?.metadataOnly ?? false;
     const isBillingEnabled = this.twentyConfigService.get('IS_BILLING_ENABLED');
     const appVersion = this.twentyConfigService.get('APP_VERSION') ?? 'unknown';
 
@@ -182,12 +183,14 @@ export class DevSeederService {
         this.workspaceMigrationValidateBuildAndRunService,
     });
 
-    await this.devSeederDataService.seed({
-      schemaName,
-      workspaceId,
-      featureFlags: featureFlagsMap,
-      light,
-    });
+    if (!metadataOnly) {
+      await this.devSeederDataService.seed({
+        schemaName,
+        workspaceId,
+        featureFlags: featureFlagsMap,
+        light,
+      });
+    }
 
     await this.workspaceCacheStorageService.flush(workspaceId, undefined);
   }
