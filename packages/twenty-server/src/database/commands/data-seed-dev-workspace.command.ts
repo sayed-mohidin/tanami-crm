@@ -11,7 +11,6 @@ import { DevSeederService } from 'src/engine/workspace-manager/dev-seeder/servic
 
 type DataSeedWorkspaceOptions = {
   light?: boolean;
-  metadataOnly?: boolean;
 };
 
 @Command({
@@ -35,15 +34,6 @@ export class DataSeedWorkspaceCommand extends CommandRunner {
     return true;
   }
 
-  @Option({
-    flags: '--metadata-only',
-    description:
-      'Only seed workspace metadata, permissions, and layouts. Skip record data such as People, Companies, Tasks, Notes, and Opportunities.',
-  })
-  parseMetadataOnly(): boolean {
-    return true;
-  }
-
   async run(
     _passedParams: string[],
     options: DataSeedWorkspaceOptions,
@@ -56,7 +46,6 @@ export class DataSeedWorkspaceCommand extends CommandRunner {
       for (const workspaceId of workspaceIds) {
         await this.devSeederService.seedDev(workspaceId, {
           light: options.light,
-          metadataOnly: options.metadataOnly,
         });
       }
     } catch (error) {

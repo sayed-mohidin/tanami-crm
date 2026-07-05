@@ -102,6 +102,18 @@ import {
   TASK_TARGET_DATA_SEEDS,
 } from 'src/engine/workspace-manager/dev-seeder/data/constants/task-target-data-seeds.constant';
 import {
+  TANAMI_LIGHT_CALL_NOTE_DATA_SEED_COLUMNS,
+  TANAMI_LIGHT_CALL_NOTE_DATA_SEEDS,
+  TANAMI_LIGHT_COMPANY_DATA_SEED_COLUMNS,
+  TANAMI_LIGHT_COMPANY_DATA_SEEDS,
+  TANAMI_LIGHT_PERSON_DATA_SEED_COLUMNS,
+  TANAMI_LIGHT_PERSON_DATA_SEEDS,
+  TANAMI_LIGHT_TASK_DATA_SEED_COLUMNS,
+  TANAMI_LIGHT_TASK_DATA_SEEDS,
+  TANAMI_LIGHT_TASK_TARGET_DATA_SEED_COLUMNS,
+  TANAMI_LIGHT_TASK_TARGET_DATA_SEEDS,
+} from 'src/engine/workspace-manager/dev-seeder/data/constants/tanami-light-data-seeds.constant';
+import {
   getWorkspaceMemberDataSeeds,
   WORKSPACE_MEMBER_DATA_SEED_COLUMNS,
 } from 'src/engine/workspace-manager/dev-seeder/data/constants/workspace-member-data-seeds.constant';
@@ -125,12 +137,46 @@ const LIGHT_SEED_TABLE_NAMES = new Set([
   'person',
   'task',
   'taskTarget',
+  '_callNote',
 ]);
 
 const getLightRecordSeedConfig = (
   recordSeedConfig: RecordSeedConfig,
 ): RecordSeedConfig => {
-  return recordSeedConfig;
+  switch (recordSeedConfig.tableName) {
+    case 'company':
+      return {
+        ...recordSeedConfig,
+        pgColumns: TANAMI_LIGHT_COMPANY_DATA_SEED_COLUMNS,
+        recordSeeds: TANAMI_LIGHT_COMPANY_DATA_SEEDS,
+      };
+    case 'person':
+      return {
+        ...recordSeedConfig,
+        pgColumns: TANAMI_LIGHT_PERSON_DATA_SEED_COLUMNS,
+        recordSeeds: TANAMI_LIGHT_PERSON_DATA_SEEDS,
+      };
+    case 'task':
+      return {
+        ...recordSeedConfig,
+        pgColumns: TANAMI_LIGHT_TASK_DATA_SEED_COLUMNS,
+        recordSeeds: TANAMI_LIGHT_TASK_DATA_SEEDS,
+      };
+    case 'taskTarget':
+      return {
+        ...recordSeedConfig,
+        pgColumns: TANAMI_LIGHT_TASK_TARGET_DATA_SEED_COLUMNS,
+        recordSeeds: TANAMI_LIGHT_TASK_TARGET_DATA_SEEDS,
+      };
+    case '_callNote':
+      return {
+        ...recordSeedConfig,
+        pgColumns: TANAMI_LIGHT_CALL_NOTE_DATA_SEED_COLUMNS,
+        recordSeeds: TANAMI_LIGHT_CALL_NOTE_DATA_SEEDS,
+      };
+    default:
+      return recordSeedConfig;
+  }
 };
 
 // Organize seeds into dependency batches for parallel insertion
@@ -252,6 +298,11 @@ const getRecordSeedsBatches = (
       tableName: 'message',
       pgColumns: MESSAGE_DATA_SEED_COLUMNS,
       recordSeeds: MESSAGE_DATA_SEEDS,
+    },
+    {
+      tableName: '_callNote',
+      pgColumns: TANAMI_LIGHT_CALL_NOTE_DATA_SEED_COLUMNS,
+      recordSeeds: TANAMI_LIGHT_CALL_NOTE_DATA_SEEDS,
     },
   ];
 
